@@ -126,7 +126,7 @@ jobs:
           key: frontend-scan
 
   scan-backend:
-     docker:
+    docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
@@ -142,11 +142,7 @@ jobs:
           paths: [backend/node_modules]
           key: backend-scan
 
-      # Docker image here
-    steps:
-      # Checkout code from git
-      # Restore from cache
-      # Your job code here
+
 
 #   deploy-infrastructure:
 #     docker:
