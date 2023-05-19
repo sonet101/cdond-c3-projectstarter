@@ -289,7 +289,7 @@ jobs:
             npm install
             npm run migration > migration_dump.txt
 
-      - run:
+      # - run:
           name: Send migration results to kvdb
           command: |
             if grep -q "has been executed good" ~/project/backend/migration_dump.txt
