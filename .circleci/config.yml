@@ -274,22 +274,33 @@ jobs:
       # Here's where you will add some code to rollback on failure
 
       - destroy-environment
-      
+
   run-migrations:
     docker:
       # Docker image here that supports NodeJS
+      - image: circleci/node:13.8.0
     steps:
+      - checkout
       # Checkout code from git
       - run:
           name: Run migrations
           command: |
-            # Your code here
-            exit 1
+            cd backend
+            npm install
+            npm run migration > migration_dump.txt
+
       - run:
-          name: Send migration results to memstash
+          name: Send migration results to kvdb
           command: |
-            # Your code here
-            exit 1
+            if grep -q "has been executed good" ~/project/backend/migration_dump.txt
+            then
+              curl --insecure https://kvdb.io/${KVDB_BUCKET}/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
+            fi
+        - 
+      - destroy-environment
+      - revert-migrations
+
+
      # Here's where you will add some code to rollback on failure      
 
 #   deploy-frontend:
